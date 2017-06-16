@@ -1,33 +1,39 @@
 <?php
 
-namespace app\controllers;
+namespace Rabousy\Controllers;
+
+use Core\Controller;
+use Core\Db;
+use Core\DbFile;
 
 /**
- * Description of Generator
- *
- * @author fanambinantsoa
+ * Class Generator
+ * @package Rabousy\Controllers
+ * @author crazafimahatratra
  */
-
 // TODO generate automatically ENUM columns
-class Generator extends \core\Controller {
+class Generator extends Controller
+{
 
     var $dbfile;
     var $db;
     var $dblorem;
     var $row_index;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $server = $this->session_get("host");
         $username = $this->session_get("username");
         $password = $this->session_get("password");
 
-        $this->dbfile = new \core\DbFile("elements.db");
-        $this->dblorem = new \core\DbFile("lorem.db");
-        $this->db = new \core\Db($server, $username, $password);
+        $this->dbfile = new DbFile("elements.db");
+        $this->dblorem = new DbFile("lorem.db");
+        $this->db = new Db($server, $username, $password);
     }
 
-    public function generate() {
+    public function generate()
+    {
         header("Content-type: text/json");
         $post = $this->json_post();
         $rows = array();
@@ -41,7 +47,8 @@ class Generator extends \core\Controller {
         $this->json_response($sql);
     }
 
-    private function generate_row($columns) {
+    private function generate_row($columns)
+    {
         $newcolumns = array();
         foreach ($columns as $column) {
             if (!isset($column['mode']))
@@ -75,14 +82,16 @@ class Generator extends \core\Controller {
         return $newcolumns;
     }
 
-    private function randomize_list($column) {
+    private function randomize_list($column)
+    {
         $elements = $this->dbfile->get(array('list_id' => $column['list_id']));
         $labels = array_map(array($this, "label"), $elements);
         $label = array_rand($labels);
         return $labels[$label];
     }
 
-    private function randomize_interval($column) {
+    private function randomize_interval($column)
+    {
         if ($column['Type'] === 'date' || $column['Type'] === 'datetime') {
             $d1 = strtotime($column['min']);
             $d2 = strtotime($column['max']);
@@ -92,38 +101,43 @@ class Generator extends \core\Controller {
             return rand($column['min'], $column['max']);
         }
     }
-    
-    private function randomize_table($column) {
-        if($column['Key'] !== 'MUL') return "";
+
+    private function increment_value($column)
+    {
+        $i = $column['start_value'] + $column['increment'] * $this->row_index;
+        return $i;
+    }
+
+    private function randomize_table($column)
+    {
+        if ($column['Key'] !== 'MUL') return "";
         $this->db->use_db($column['parent']['REFERENCED_TABLE_NAME']);
         $sql = "SELECT DISTINCT {$column['parent']['REFERENCED_COLUMN_NAME']} FROM {$column['parent']['REFERENCED_TABLE_NAME']}";
         $values = $this->db->query($sql);
         $newvalues = array();
-        foreach($values as $v) {
+        foreach ($values as $v) {
             $newvalues[] = $v[$column['parent']['REFERENCED_COLUMN_NAME']];
         }
         return $newvalues[array_rand($newvalues)];
     }
 
-    private function increment_value($column) {
-        $i = $column['start_value'] + $column['increment'] * $this->row_index;
-        return $i;
-    }
-    
-    private function lorem($column) {
-        if(!isset($column['lorem_id']) || empty($column['lorem_id'])) return "";
+    private function lorem($column)
+    {
+        if (!isset($column['lorem_id']) || empty($column['lorem_id'])) return "";
         $lorem = $this->dblorem->get(array('id' => $column['lorem_id']));
         return $lorem[0]['content'];
     }
-    
-    private function randomize_lorem() {
+
+    private function randomize_lorem()
+    {
         $lorems = $this->dblorem->get();
         $contents = array_map(array($this, "content"), $lorems);
         $content = array_rand($contents);
         return $contents[$content];
     }
 
-    private function apply_post_function($column, $value) {
+    private function apply_post_function($column, $value)
+    {
         if (!isset($column['post_function']) || empty($column['post_function']))
             return $value;
         switch ($column['post_function']) {
@@ -142,11 +156,13 @@ class Generator extends \core\Controller {
         }
     }
 
-    private function label($array) {
+    private function label($array)
+    {
         return $array['label'];
     }
-    
-    private function content($array) {
+
+    private function content($array)
+    {
         return $array['content'];
     }
 
