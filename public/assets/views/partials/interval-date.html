@@ -1,0 +1,13 @@
+<div>
+    <input type="text" class="form-control col-md-5 pull-left datepicker" ng-model="column.min" placeholder="Min"/>
+    <input type="text" class="form-control col-md-5 pull-right datepicker" ng-model="column.max" placeholder="Max"/>
+</div>
+
+<script>
+    $('.datepicker').bootstrapMaterialDatePicker({
+        format: 'YYYY-MM-DD',
+        clearButton: true,
+        weekStart: 1,
+        time: false
+    });
+</script>

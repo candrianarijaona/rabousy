@@ -1,0 +1,76 @@
+<h5>Dictionnary configuration</h5>
+<div class="row mt-2">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header stylish-color white-text">
+                Lists
+            </div>
+            <div class="card-block">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr ng-repeat="row in lists">
+                            <td>
+                                <a ng-click="edit(row)">{{row.label}}</a>
+                                <span class="pull-right"><a ng-click="remove(row)"><i class="fa fa-times-circle"></i></a></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <div class="md-form">
+                                    <form method="post" ng-submit="save()">
+                                        <input type="text" ng-model="newrow.label" class="form-control" id="newrow"/>
+                                        <label>Add new label</label>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header stylish-color white-text">
+                Elements
+            </div>
+            <div class="card-block" ng-if="editrow" id='block_1'>
+                <form ng-submit='update()'>
+                    <div class="md-form">
+                        <input type="text" ng-model="editrow.label" class="form-control" id="newrow"/>
+                        <label ng-class="{active:editrow.label}">Edit row label</label>
+                    </div>
+                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Elements inside {{editrow.label}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="element in elements">
+                            <td>
+                                {{element.label}}
+                                <span class="pull-right"><a ng-click="removeElement(element)"><i class="fa fa-times-circle"></i></a></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <form ng-submit="saveElement()">
+                                    <div class='md-form'>
+                                        <input type='text' class='form-control' ng-model="newelement.label"/>
+                                        <label>Add a new element</label>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 <?php
 
 function __autoload($class) {
-    $filename = realpath(__DIR__ . "/" . str_replace("\\", "/", $class) . ".php");
+    $filename = realpath(__DIR__ . "index.php/" . str_replace("\\", "/", $class) . ".php");
     if (!empty($filename)) {
         require $filename;
     }
