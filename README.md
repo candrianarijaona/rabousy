@@ -9,3 +9,5 @@ I used to use it when I started a new project with a whole new database, and I'm
 Edit file `app/config.php` and set the variable `$config['base_url']`
 
 You are done !
+
+Feel free to contact me if you have some comments.
