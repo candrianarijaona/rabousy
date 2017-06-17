@@ -42,7 +42,7 @@ class Generator extends Controller
             $this->row_index = $i;
             $rows[] = $this->generate_row($post['columns']);
         }
-
+        
         $sql = $this->db->insert_batch($post['table'], $rows);
         $this->json_response($sql);
     }

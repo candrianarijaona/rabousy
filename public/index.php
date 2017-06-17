@@ -10,8 +10,6 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-session_start();
-
 // Instantiate the app
 $configs = require __DIR__ . '/../app/config.php';
 

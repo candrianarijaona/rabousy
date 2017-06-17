@@ -3,6 +3,7 @@
 namespace Rabousy\Controllers;
 
 use Core\Controller;
+use Core\Db;
 
 /**
  * Class Databases
@@ -11,8 +12,7 @@ use Core\Controller;
  */
 class Databases extends Controller {
     /**
-     *
-     * @var \core\Db
+     * @var Db
      */
     var $db;
 
@@ -21,7 +21,7 @@ class Databases extends Controller {
         $server = $this->session_get("server");
         $username = $this->session_get("username");
         $password = $this->session_get("password");
-        $this->db = new \core\Db($server, $username, $password);
+        $this->db = new Db($server, $username, $password);
     }
 
     public function get_dbs() {

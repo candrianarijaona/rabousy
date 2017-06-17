@@ -3,6 +3,7 @@
 namespace Rabousy\Controllers;
 
 use Core\Controller;
+use Core\DbFile;
 
 /**
  * Class Lorem
@@ -18,8 +19,8 @@ class Lorem extends Controller
 
     public function get_lorems()
     {
-        $db = new \core\DbFile("lorem.db");
-        $lorems = $db->get();
-        $this->json_response(array('lorems' => $lorems));
+        $this->json_response([
+            'lorems' => (new DbFile("lorem.db"))->get()
+        ]);
     }
 }

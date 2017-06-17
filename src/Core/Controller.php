@@ -19,6 +19,9 @@ class Controller {
      * Constructor
      */
     public function __construct() {
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            session_start();
+        }
         $this->view = new View();
     }
 
@@ -96,17 +99,17 @@ class Controller {
 
     /**
      * Post from json input
-     * @return type
+     * @return mixed
      */
     protected function json_post() {
-        $contents = file_get_contents("php://input");
-        return json_decode($contents, true);
+        //$contents = file_get_contents("php://input");
+        return json_decode(null, true);
     }
 
 
     /**
      * Output a json response
-     * @param type $value
+     * @param array $value
      */
     protected function json_response($value) {
         header("Content-type: text/json");
