@@ -102,8 +102,8 @@ class Controller {
      * @return mixed
      */
     protected function json_post() {
-        //$contents = file_get_contents("php://input");
-        return json_decode(null, true);
+        $contents = file_get_contents("php://input");
+        return json_decode($contents, true);
     }
 
 
